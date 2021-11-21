@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.recyclerview.widget.RecyclerView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -19,6 +20,8 @@ class MainActivity : AppCompatActivity() {
 
     var naverShoppingApiResponse:NaverShoppingApiResponse?= null
 
+    val recyclerview: RecyclerView by lazy { findViewById(R.id.recycler) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -28,6 +31,9 @@ class MainActivity : AppCompatActivity() {
         findViewById<Button>(R.id.btn).setOnClickListener { Toast.makeText(this, "aaa", Toast.LENGTH_SHORT).show() }
 
         findViewById<Button>(R.id.btn).setOnClickListener { requestNaverSearchApi() }
+
+        //naverShoppingApiResponse.let { recyclerview.adapter= MyAdapter(this, naverShoppingApiResponse.items) }
+        //recyclerview.adapter= MyAdapter(this, naverShoppingApiResponse?.items)\
 
 
     }
@@ -46,22 +52,24 @@ class MainActivity : AppCompatActivity() {
                 buffer.append("total : " + shoppingResponse?.total +"\n")
                 buffer.append("display : " + shoppingResponse?.display + "\n")
                 buffer.append("items size : " + shoppingResponse?.items?.size +"\n")
-                buffer.append(shoppingResponse?.items?.get(0)?.title+"\n")
-                buffer.append(shoppingResponse?.items?.get(0)?.link+"\n")
-                buffer.append(shoppingResponse?.items?.get(0)?.image+"\n")
-                buffer.append(shoppingResponse?.items?.get(0)?.lprice+"\n")
-                buffer.append(shoppingResponse?.items?.get(0)?.hprice+"\n")
-                buffer.append(shoppingResponse?.items?.get(0)?.maker+"\n")
-                buffer.append(shoppingResponse?.items?.get(0)?.brand+"\n")
-                buffer.append(shoppingResponse?.items?.get(0)?.mallName+"\n")
-                buffer.append(shoppingResponse?.items?.get(0)?.productId+"\n")
-                buffer.append(shoppingResponse?.items?.get(0)?.productType+"\n")
-                buffer.append(shoppingResponse?.items?.get(0)?.category1+"\n")
-                buffer.append(shoppingResponse?.items?.get(0)?.category2+"\n")
-                buffer.append(shoppingResponse?.items?.get(0)?.category3+"\n")
-                buffer.append(shoppingResponse?.items?.get(0)?.category4+"\n")
+//                buffer.append(shoppingResponse?.items?.get(0)?.title+"\n")
+//                buffer.append(shoppingResponse?.items?.get(0)?.link+"\n")
+//                buffer.append(shoppingResponse?.items?.get(0)?.image+"\n")
+//                buffer.append(shoppingResponse?.items?.get(0)?.lprice+"\n")
+//                buffer.append(shoppingResponse?.items?.get(0)?.hprice+"\n")
+//                buffer.append(shoppingResponse?.items?.get(0)?.maker+"\n")
+//                buffer.append(shoppingResponse?.items?.get(0)?.brand+"\n")
+//                buffer.append(shoppingResponse?.items?.get(0)?.mallName+"\n")
+//                buffer.append(shoppingResponse?.items?.get(0)?.productId+"\n")
+//                buffer.append(shoppingResponse?.items?.get(0)?.productType+"\n")
+//                buffer.append(shoppingResponse?.items?.get(0)?.category1+"\n")
+//                buffer.append(shoppingResponse?.items?.get(0)?.category2+"\n")
+//                buffer.append(shoppingResponse?.items?.get(0)?.category3+"\n")
+//                buffer.append(shoppingResponse?.items?.get(0)?.category4+"\n")
+//
+//                AlertDialog.Builder(this@MainActivity).setMessage(buffer.toString()).show()
+                shoppingResponse?.items?.let { recyclerview.adapter= MyAdapter(this@MainActivity, it) }
 
-                AlertDialog.Builder(this@MainActivity).setMessage(buffer.toString()).show()
             }
 
             override fun onFailure(call: Call<NaverShoppingApiResponse>, t: Throwable) {
